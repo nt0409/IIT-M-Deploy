@@ -24,9 +24,15 @@ def root():
 
 @app.get("/api")
 def get_marks(name: list[str] = Query(...)):
-    result = [marks_data.get(n, None) for n in name]
+    # Search for marks by name in the array
+    result = []
+    for n in name:
+        found = next(
+            (item["marks"] for item in marks_data if item["name"] == n),
+            None
+        )
+        result.append(found)
     return {"marks": result}
-
 @app.get("/favicon.ico")
 def favicon():
     return ""
